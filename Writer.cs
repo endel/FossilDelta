@@ -20,14 +20,8 @@ namespace Fossil
 			this.a = new List<byte>();
 		}
 
-//		public void PutByte (int b)
-//		{
-//			this.a.Add ((byte)(b & 0xff));
-//		}	
-
 		public void PutChar (char c)
 		{
-//			this.PutByte ((byte)c);
 			this.a.Add ((byte) c);
 		}	
 

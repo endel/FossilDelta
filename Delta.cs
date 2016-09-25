@@ -225,17 +225,17 @@ namespace Fossil
 			for(i=1, x=64; v>=x; i++, x <<= 6){}
 			return i;
 		}
-
-		// TODO: checksum has been improved since last JavaScript port version
-		static int Checksum(byte[] arr) {
-			int sum0 = 0, sum1 = 0, sum2 = 0, sum = 0,
-			z = 0, N = arr.Length;
+			
+		// Return a 32-bit checksum of the array.
+		static Int32 Checksum(byte[] arr) {
+			Int32 sum0 = 0, sum1 = 0, sum2 = 0, sum = 0,
+				z = 0, N = arr.Length;
 
 			while(N >= 16){
-				sum0 += (arr[z+0] + arr[z+4] + arr[z+8] + arr[z+12]);
-				sum1 += (arr[z+1] + arr[z+5] + arr[z+9] + arr[z+13]);
-				sum2 += (arr[z+2] + arr[z+6] + arr[z+10]+ arr[z+14]);
-				sum  += (arr[z+3] + arr[z+7] + arr[z+11]+ arr[z+15]);
+				sum0 += arr[z+0] + arr[z+4] + arr[z+8]  + arr[z+12];
+				sum1 += arr[z+1] + arr[z+5] + arr[z+9]  + arr[z+13];
+				sum2 += arr[z+2] + arr[z+6] + arr[z+10] + arr[z+14];
+				sum  += arr[z+3] + arr[z+7] + arr[z+11] + arr[z+15];
 				z += 16;
 				N -= 16;
 			}
@@ -247,14 +247,17 @@ namespace Fossil
 				z += 4;
 				N -= 4;
 			}
-
+				
 			sum += (sum2 << 8) + (sum1 << 16) + (sum0 << 24);
 			switch (N&3) {
 			case 3:
 				sum += (arr [z + 2] << 8);
+				sum += (arr [z + 1] << 16);
+				sum += (arr [z + 0] << 24);
 				break;
 			case 2: 
 				sum += (arr [z + 1] << 16);
+				sum += (arr [z + 0] << 24);
 				break;
 			case 1: 
 				sum += (arr [z + 0] << 24);
