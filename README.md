@@ -1,5 +1,7 @@
-Fossil SCM delta compression algorithm
-======================================
+Delta compression algorithm for C#
+===
+
+> This is a port from the original C implementation. See references below.
 
 **WORK IN PROGRESS, NOT WORKING YET**
 
@@ -12,8 +14,12 @@ a related artifact.
 * [Algorithm](http://www.fossil-scm.org/index.html/doc/tip/www/delta_encoder_algorithm.wiki)
 * [Original implementation](http://www.fossil-scm.org/index.html/artifact/f3002e96cc35f37b)
 
+Other implementations:
+
+- [JavaScript](https://github.com/dchest/fossil-delta-js)
+
 Installation (comming soon)
-------------
+---
 
 ### NuGet Gallery
 
@@ -26,16 +32,16 @@ You can add FossilDelta to your project with the **NuGet Package Manager**, by u
     PM> Install-Package FossilDelta
 
 Usage
------
+---
 
 ### Fossil.Delta.Create(byte[] origin, byte[] target)
 
-Returns a delta (as `Array` of bytes) from origin to target (any array-like
-object containing bytes, e.g. `Uint8Array`, `Buffer` or plain `Array`).
+Returns the difference between `origin` and `target` as a byte array (`byte[]`)
 
 ### Fossil.Delta.Apply(byte[] origin, byte[] delta)
 
-Returns target (as `Array` of bytes) by applying delta to origin.
+Apply the `delta` patch on `origin`, returning the final value as byte array
+(`byte[]`).
 
 Throws an error if it fails to apply the delta
 (e.g. if it was corrupted).

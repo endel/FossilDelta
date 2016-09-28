@@ -4,7 +4,7 @@ namespace Fossil
 {
 	public class Delta
 	{
-		public static int NHASH = 16;
+		public static UInt16 NHASH = 16;
 
 		public static byte[] Create(byte[] origin, byte[] target) { 
 			var zDelta = new Writer();
@@ -37,7 +37,7 @@ namespace Fossil
 			RollingHash h = new RollingHash();
 			for (i = 0; i < lenSrc-NHASH; i += NHASH) {
 				h.Init(origin, i);
-				hv = h.Value() % nHash;
+				hv = (int) (h.Value() % nHash);
 				collide[i/NHASH] = landmark[hv];
 				landmark[hv] = i/NHASH;
 			}
@@ -53,7 +53,7 @@ namespace Fossil
 				bestCnt = 0;
 				while (true) {
 					int limit = 250;
-					hv = h.Value() % nHash;
+					hv = (int) (h.Value() % nHash);
 					iBlock = landmark[hv];
 					while (iBlock >= 0 && (limit--)>0 ) {
 						//
@@ -227,7 +227,7 @@ namespace Fossil
 		}
 			
 		// Return a 32-bit checksum of the array.
-		static Int32 Checksum(byte[] arr) {
+		static int Checksum(byte[] arr) {
 			Int32 sum0 = 0, sum1 = 0, sum2 = 0, sum = 0,
 				z = 0, N = arr.Length;
 
