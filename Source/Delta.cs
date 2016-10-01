@@ -12,14 +12,14 @@ namespace Fossil
 			int lenSrc = origin.Length;
 			int i, lastRead = -1;
 
-			zDelta.PutInt(lenOut);
+			zDelta.PutInt((uint) lenOut);
 			zDelta.PutChar('\n');
 
 			// If the source is very small, it means that we have no
 			// chance of ever doing a copy command.  Just output a single
 			// literal segment for the entire target and exit.
 			if (lenSrc <= NHASH) {
-				zDelta.PutInt(lenOut);
+				zDelta.PutInt((uint) lenOut);
 				zDelta.PutChar(':');
 				zDelta.PutArray(target, 0, lenOut);
 				zDelta.PutInt(Checksum(target));
@@ -114,15 +114,15 @@ namespace Fossil
 					if (bestCnt > 0) {
 						if (bestLitsz > 0) {
 							// Add an insert command before the copy.
-							zDelta.PutInt(bestLitsz);
+							zDelta.PutInt((uint) bestLitsz);
 							zDelta.PutChar(':');
 							zDelta.PutArray(target, _base, _base+bestLitsz);
 							_base += bestLitsz;
 						}
 						_base += bestCnt;
-						zDelta.PutInt(bestCnt);
+						zDelta.PutInt((uint) bestCnt);
 						zDelta.PutChar('@');
-						zDelta.PutInt(bestOfst);
+						zDelta.PutInt((uint) bestOfst);
 						zDelta.PutChar(',');
 						if (bestOfst + bestCnt -1 > lastRead) {
 							lastRead = bestOfst + bestCnt - 1;
@@ -135,7 +135,7 @@ namespace Fossil
 					if (_base+i+NHASH >= lenOut){
 						// We have reached the end and have not found any
 						// matches.  Do an "insert" for everything that does not match
-						zDelta.PutInt(lenOut-_base);
+						zDelta.PutInt((uint) (lenOut-_base));
 						zDelta.PutChar(':');
 						zDelta.PutArray(target, _base, _base+lenOut-_base);
 						_base = lenOut;
@@ -150,7 +150,7 @@ namespace Fossil
 			// Output a final "insert" record to get all the text at the end of
 			// the file that does not match anything in the source.
 			if(_base < lenOut) {
-				zDelta.PutInt(lenOut-_base);
+				zDelta.PutInt((uint) (lenOut-_base));
 				zDelta.PutChar(':');
 				zDelta.PutArray(target, _base, _base+lenOut-_base);
 			}
@@ -227,15 +227,15 @@ namespace Fossil
 		}
 			
 		// Return a 32-bit checksum of the array.
-		static int Checksum(byte[] arr) {
-			Int32 sum0 = 0, sum1 = 0, sum2 = 0, sum = 0,
-				z = 0, N = arr.Length;
+		static uint Checksum(byte[] arr) {
+			uint sum0 = 0, sum1 = 0, sum2 = 0, sum = 0,
+			z = 0, N = (uint) arr.Length;
 
 			while(N >= 16){
-				sum0 += arr[z+0] + arr[z+4] + arr[z+8]  + arr[z+12];
-				sum1 += arr[z+1] + arr[z+5] + arr[z+9]  + arr[z+13];
-				sum2 += arr[z+2] + arr[z+6] + arr[z+10] + arr[z+14];
-				sum  += arr[z+3] + arr[z+7] + arr[z+11] + arr[z+15];
+				sum0 += (uint) arr[z+0] + arr[z+4] + arr[z+8]  + arr[z+12];
+				sum1 += (uint) arr[z+1] + arr[z+5] + arr[z+9]  + arr[z+13];
+				sum2 += (uint) arr[z+2] + arr[z+6] + arr[z+10] + arr[z+14];
+				sum  += (uint) arr[z+3] + arr[z+7] + arr[z+11] + arr[z+15];
 				z += 16;
 				N -= 16;
 			}
@@ -251,16 +251,16 @@ namespace Fossil
 			sum += (sum2 << 8) + (sum1 << 16) + (sum0 << 24);
 			switch (N&3) {
 			case 3:
-				sum += (arr [z + 2] << 8);
-				sum += (arr [z + 1] << 16);
-				sum += (arr [z + 0] << 24);
+				sum += (uint) (arr [z + 2] << 8);
+				sum += (uint) (arr [z + 1] << 16);
+				sum += (uint) (arr [z + 0] << 24);
 				break;
-			case 2: 
-				sum += (arr [z + 1] << 16);
-				sum += (arr [z + 0] << 24);
+			case 2:
+				sum += (uint) (arr [z + 1] << 16);
+				sum += (uint) (arr [z + 0] << 24);
 				break;
-			case 1: 
-				sum += (arr [z + 0] << 24);
+			case 1:
+				sum += (uint) (arr [z + 0] << 24);
 				break;
 			}
 			return sum;

@@ -5,7 +5,7 @@ namespace Fossil
 {
 	public class Writer
 	{
-		static readonly char[] zDigits = {
+		static readonly uint[] zDigits = {
 			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D',
 			'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
 			'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '_', 'a', 'b', 'c', 'd', 'e',
@@ -25,10 +25,10 @@ namespace Fossil
 			this.a.Add ((byte) c);
 		}	
 
-		public void PutInt (int v)
+		public void PutInt (uint v)
 		{
 			int i, j;
-			char[] zBuf = new char[20];
+			uint[] zBuf = new uint[20];
 
 			if (v == 0) {
 				this.PutChar ('0');
