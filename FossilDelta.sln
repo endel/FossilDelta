@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FossilDelta", "FossilDelta.csproj", "{A9D0EB8B-BB52-47E5-90DB-0CBC25593C1C}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{6E2D04B8-14EC-4875-9D65-8F16376E2406}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Source", "Source\Source.csproj", "{90A6D728-0F92-4DED-A49B-F0BE69887E86}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +15,9 @@ Global
 		{6E2D04B8-14EC-4875-9D65-8F16376E2406}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E2D04B8-14EC-4875-9D65-8F16376E2406}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E2D04B8-14EC-4875-9D65-8F16376E2406}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A9D0EB8B-BB52-47E5-90DB-0CBC25593C1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A9D0EB8B-BB52-47E5-90DB-0CBC25593C1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A9D0EB8B-BB52-47E5-90DB-0CBC25593C1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A9D0EB8B-BB52-47E5-90DB-0CBC25593C1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90A6D728-0F92-4DED-A49B-F0BE69887E86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90A6D728-0F92-4DED-A49B-F0BE69887E86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90A6D728-0F92-4DED-A49B-F0BE69887E86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90A6D728-0F92-4DED-A49B-F0BE69887E86}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

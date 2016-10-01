@@ -41,9 +41,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FossilDelta.csproj">
-      <Project>{A9D0EB8B-BB52-47E5-90DB-0CBC25593C1C}</Project>
-      <Name>FossilDelta</Name>
+    <ProjectReference Include="..\Source\Source.csproj">
+      <Project>{90A6D728-0F92-4DED-A49B-F0BE69887E86}</Project>
+      <Name>Source</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>
