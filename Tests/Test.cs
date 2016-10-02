@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 
 namespace Tests
 {
@@ -29,8 +30,20 @@ namespace Tests
 		[Test ()]
 		public void TestApplyTruncatedDelta ()
 		{
-		}
+			byte[] origin = System.IO.File.ReadAllBytes ("../../data/1/origin");
+			byte[] delta = System.IO.File.ReadAllBytes ("../../data/1/delta");
 
+			// Apply successfully
+			Assert.DoesNotThrow (() => Fossil.Delta.Apply (origin, delta));
+
+			// Let's corrupt our delta
+			Stack<byte> deltaBytes = new Stack<byte> (delta);
+			deltaBytes.Pop ();
+			byte[] corruptedDelta = deltaBytes.ToArray ();
+
+			// Apply should throw exception
+			Assert.Throws<Exception> (() => Fossil.Delta.Apply(origin, corruptedDelta));
+		}
 
 	}
 }
