@@ -1,9 +1,9 @@
 Delta compression algorithm for C#
 ===
 
-> This is a port from the original C implementation. See references below.
+[![Build Status](https://secure.travis-ci.org/endel/FossilDelta.svg?branch=master)](https://travis-ci.org/endel/FossilDelta)
 
-**WORK IN PROGRESS, NOT WORKING YET**
+> This is a port from the original C implementation. See references below.
 
 Fossil achieves efficient storage and low-bandwidth synchronization through the
 use of delta-compression. Instead of storing or transmitting the complete
