@@ -17,7 +17,7 @@ namespace Fossil
 		};
 			
 		public byte[] a;
-		public int pos;
+		public uint pos;
 
 		public Reader (byte[] array)
 		{
@@ -30,11 +30,12 @@ namespace Fossil
 			return this.pos < this.a.Length;
 		}
 
-		public int GetByte () 
+		public byte GetByte () 
 		{
-			var b = this.a[this.pos];
+			byte b = this.a[this.pos];
 			this.pos++;
-			if (this.pos > this.a.Length) throw new IndexOutOfRangeException("out of bounds");
+			if (this.pos > this.a.Length) 
+				throw new IndexOutOfRangeException("out of bounds");
 			return b;
 		}
 
@@ -50,11 +51,12 @@ namespace Fossil
 		 * the integer.  The *pLen parameter holds the length of the string
 		 * in *pz and is decremented once for each character in the integer.
 		 */
-		public int GetInt ()
+		public uint GetInt ()
 		{
-			int v = 0, c;
+			uint v = 0;
+			int c;
 			while(this.HaveBytes() && (c = zValue[0x7f & this.GetByte()]) >= 0) {
-				v = (v<<6) + c;
+				v = (uint) ((((Int32) v) << 6) + c);
 			}
 			this.pos--;
 			return v;

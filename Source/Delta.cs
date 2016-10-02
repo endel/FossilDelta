@@ -161,17 +161,18 @@ namespace Fossil
 		}
 
 		public static byte[] Apply(byte[] origin, byte[] delta) { 
-			int limit, total = 0;
+			uint limit, total = 0;
+			uint lenSrc = (uint) origin.Length;
+			uint lenDelta = (uint) delta.Length;
 			Reader zDelta = new Reader(delta);
-			int lenSrc = origin.Length;
-			int lenDelta = delta.Length;
 
 			limit = zDelta.GetInt();
 			if (zDelta.GetChar() != '\n')
 				throw new Exception("size integer not terminated by \'\\n\'");
-			var zOut = new Writer();
+
+			Writer zOut = new Writer();
 			while(zDelta.HaveBytes()) {
-				int cnt, ofst;
+				uint cnt, ofst;
 				cnt = zDelta.GetInt();
 
 				switch (zDelta.GetChar()) {
@@ -184,7 +185,7 @@ namespace Fossil
 						throw new Exception("copy exceeds output file size");
 					if (ofst+cnt > lenSrc)
 						throw new Exception("copy extends past end of input");
-					zOut.PutArray(origin, ofst, ofst+cnt);
+					zOut.PutArray(origin, (int) ofst, (int) (ofst+cnt));
 					break;
 
 				case ':':
@@ -193,7 +194,7 @@ namespace Fossil
 						throw new Exception("insert command gives an output larger than predicted");
 					if (cnt > lenDelta)
 						throw new Exception("insert count exceeds size of delta");
-					zOut.PutArray(zDelta.a, zDelta.pos, zDelta.pos+cnt);
+					zOut.PutArray(zDelta.a, (int) zDelta.pos, (int) (zDelta.pos+cnt));
 					zDelta.pos += cnt;
 					break;
 
@@ -212,9 +213,9 @@ namespace Fossil
 			throw new Exception("unterminated delta");
 		}
 
-		public static int OutputSize(byte[] delta) { 
-			var zDelta = new Reader(delta);
-			var size = zDelta.GetInt();
+		public static uint OutputSize(byte[] delta) { 
+			Reader zDelta = new Reader(delta);
+			uint size = zDelta.GetInt();
 			if (zDelta.GetChar() != '\n')
 				throw new Exception("size integer not terminated by \'\\n\'");
 			return size;

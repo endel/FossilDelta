@@ -20,6 +20,9 @@ namespace Tests
 				byte[] delta = Fossil.Delta.Create (origin, target);
 
 				Assert.AreEqual (delta, goodDelta);
+
+				byte[] applied = Fossil.Delta.Apply(origin, delta);
+				Assert.AreEqual(applied, target);
 			}
 		}
 
