@@ -6,6 +6,8 @@
 [Bb]in/
 packages/
 TestResults/
+TestResult.xml
+*.nupkg
 
 # globs
 Makefile.in

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>FossilDelta</id>
+    <version>0.1.0</version>
+    <title>FossilDelta</title>
+    <authors>Endel Dreyer</authors>
+    <owners>Endel Dreyer</owners>
+    <licenseUrl>https://github.com/endel/FossilDelta/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/endel/FossilDelta/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>An efficient delta compression algorithm written in C#</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2016 Endel Dreyer</copyright>
+    <tags>delta patch binary</tags>
+  </metadata>
+  <files>
+    <file src="*.cs;Source/Properties/AssemblyInfo.cs" target="Source" />
+    <file src="Source/bin/Release/Delta.dll" target="lib/net35" />
+  </files>
+</package>

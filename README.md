@@ -18,7 +18,7 @@ Other implementations:
 
 - [JavaScript](https://github.com/dchest/fossil-delta-js)
 
-Installation (comming soon)
+Installation
 ---
 
 ### NuGet Gallery
