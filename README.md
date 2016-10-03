@@ -16,7 +16,7 @@ a related artifact.
 
 Other implementations:
 
-- [JavaScript](https://github.com/dchest/fossil-delta-js)
+- [JavaScript](https://github.com/dchest/fossil-delta-js) ([Online demo](https://dchest.github.io/fossil-delta-js/))
 
 Installation
 ---
