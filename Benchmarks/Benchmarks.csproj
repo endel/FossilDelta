@@ -53,16 +53,16 @@
     <Reference Include="System.Threading.Tasks.Extensions">
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.0.0\lib\portable-net45+win8+wp8+wpa81\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="BenchmarkDotNet.Core">
-      <HintPath>..\packages\BenchmarkDotNet.Core.0.9.9\lib\net45\BenchmarkDotNet.Core.dll</HintPath>
-    </Reference>
     <Reference Include="System.Management" />
     <Reference Include="System.Xml" />
+    <Reference Include="BenchmarkDotNet.Core">
+      <HintPath>..\packages\BenchmarkDotNet.Core.0.9.9.182\lib\net45\BenchmarkDotNet.Core.dll</HintPath>
+    </Reference>
     <Reference Include="BenchmarkDotNet.Toolchains.Roslyn">
-      <HintPath>..\packages\BenchmarkDotNet.Toolchains.Roslyn.0.9.9\lib\net45\BenchmarkDotNet.Toolchains.Roslyn.dll</HintPath>
+      <HintPath>..\packages\BenchmarkDotNet.Toolchains.Roslyn.0.9.9.182\lib\net45\BenchmarkDotNet.Toolchains.Roslyn.dll</HintPath>
     </Reference>
     <Reference Include="BenchmarkDotNet">
-      <HintPath>..\packages\BenchmarkDotNet.0.9.9\lib\net45\BenchmarkDotNet.dll</HintPath>
+      <HintPath>..\packages\BenchmarkDotNet.0.9.9.182\lib\net45\BenchmarkDotNet.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -70,6 +70,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FossilDelta.cs" />
     <Compile Include="Samples.cs" />
+    <Compile Include="DeltaCompressionDotNet.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

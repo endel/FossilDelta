@@ -7,8 +7,10 @@ namespace Benchmarks
 	{
 		public static void Main (string[] args)
 		{
-			var summary = BenchmarkRunner.Run<FossilDelta>();
-			Console.WriteLine (summary.ToString());
+			var switcher = new BenchmarkSwitcher(new[] {
+				typeof(FossilDelta)
+			});
+			switcher.Run(args);
 		}
 	}
 }
