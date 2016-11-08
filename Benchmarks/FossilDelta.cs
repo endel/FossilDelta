@@ -7,11 +7,20 @@ namespace Benchmarks
 {
 	public class FossilDelta
 	{
-		static byte[] sample1Delta = Fossil.Delta.Create(Samples.origin1, Samples.target1);
-		static byte[] sample2Delta = Fossil.Delta.Create(Samples.origin2, Samples.target2);
-		static byte[] sample3Delta = Fossil.Delta.Create(Samples.origin3, Samples.target3);
-		static byte[] sample4Delta = Fossil.Delta.Create(Samples.origin4, Samples.target4);
-		static byte[] sample5Delta = Fossil.Delta.Create(Samples.origin5, Samples.target5);
+		static byte[] sample1Delta;
+		static byte[] sample2Delta;
+		static byte[] sample3Delta;
+		static byte[] sample4Delta;
+		static byte[] sample5Delta;
+
+		public FossilDelta()
+		{
+			sample1Delta = Fossil.Delta.Create(Samples.origin1, Samples.target1);
+			sample2Delta = Fossil.Delta.Create(Samples.origin2, Samples.target2);
+			sample3Delta = Fossil.Delta.Create(Samples.origin3, Samples.target3);
+			sample4Delta = Fossil.Delta.Create(Samples.origin4, Samples.target4);
+			sample5Delta = Fossil.Delta.Create(Samples.origin5, Samples.target5);
+		}
 
 		[Benchmark]
 		public byte[] CreateDelta1()

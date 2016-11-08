@@ -71,6 +71,18 @@
     <Compile Include="FossilDelta.cs" />
     <Compile Include="Samples.cs" />
     <Compile Include="DeltaCompressionDotNet.cs" />
+    <Compile Include="deltaqBsDiff.cs" />
+    <Compile Include="deltaq\BsDiff\BsDiff.cs" />
+    <Compile Include="deltaq\BsDiff\BsPatch.cs" />
+    <Compile Include="deltaq\Bzip2\BZip2Constants.cs" />
+    <Compile Include="deltaq\Bzip2\BZip2Exception.cs" />
+    <Compile Include="deltaq\Bzip2\BZip2InputStream.cs" />
+    <Compile Include="deltaq\Bzip2\BZip2OutputStream.cs" />
+    <Compile Include="deltaq\Bzip2\Checksums\IChecksum.cs" />
+    <Compile Include="deltaq\Bzip2\Checksums\StrangeCrc.cs" />
+    <Compile Include="deltaq\Extensions.cs" />
+    <Compile Include="deltaq\SuffixSort\ISuffixSort.cs" />
+    <Compile Include="deltaq\SuffixSort\SAIS.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -81,5 +93,8 @@
       <Project>{90A6D728-0F92-4DED-A49B-F0BE69887E86}</Project>
       <Name>Source</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="deltaq\" />
   </ItemGroup>
 </Project>

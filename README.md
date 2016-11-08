@@ -74,3 +74,4 @@ locally using the `make benchmark` in your commandline.
   ApplyDelta4 |    252.5743 ns |    29.7323 ns |    234.1123 ns |    236.0480 ns |
   ApplyDelta5 |     68.5550 ns |     9.2923 ns |     92.4574 ns |     39.0918 ns |
 ```
+
