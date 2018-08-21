@@ -16,6 +16,8 @@ a related artifact.
 
 Other implementations:
 
+- [Haxe](https://github.com/endel/fossil-delta-hx)
+- [Python](https://github.com/ggicci/python-fossil-delta)
 - [JavaScript](https://github.com/dchest/fossil-delta-js) ([Online demo](https://dchest.github.io/fossil-delta-js/))
 
 Installation
