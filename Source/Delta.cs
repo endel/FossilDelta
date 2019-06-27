@@ -78,7 +78,7 @@ namespace Fossil
 						
 						iSrc = iBlock*NHASH;
 
-						//if iSrc is insied the best match region we can skip
+						//if iSrc is inside the best match region we can skip
 						// as this would lead to the same match 
 						if (bestCnt > 0 && iSrc > bestOfst && iSrc < (bestOfst + bestCnt))
 						{
