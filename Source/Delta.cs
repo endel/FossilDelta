@@ -35,7 +35,7 @@ namespace Fossil
 			for (i = 0; i < landmark.Length; i++) landmark[i] = -1;
 			int hv;
 			RollingHash h = new RollingHash();
-			for (i = 0; i < lenSrc-NHASH; i += NHASH) {
+			for (i = lenSrc - lenSrc % NHASH - NHASH; i >= 0; i -= NHASH)
 				h.Init(origin, i);
 				hv = (int) (h.Value() % nHash);
 				collide[i/NHASH] = landmark[hv];
@@ -75,9 +75,19 @@ namespace Fossil
 						int j, k, x, y;
 						int sz;
 
+						
+						iSrc = iBlock*NHASH;
+
+						//if iSrc is inside the best match region we can skip
+						// as this would lead to the same match 
+						if (bestCnt > 0 && iSrc > bestOfst && iSrc < (bestOfst + bestCnt))
+						{
+							iBlock = collide[iBlock];
+							continue;
+						}
+
 						// Beginning at iSrc, match forwards as far as we can.
 						// j counts the number of characters that match.
-						iSrc = iBlock*NHASH;
 						for (j = 0, x = iSrc, y = _base+i; x < lenSrc && y < lenOut; j++, x++, y++) {
 							if (origin[x] != target[y]) break;
 						}
