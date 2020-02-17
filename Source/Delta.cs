@@ -6,7 +6,7 @@ namespace Fossil
 	{
 		public static UInt16 NHASH = 16;
 
-		public static byte[] Create(byte[] origin, byte[] target) { 
+		public static byte[] Create(byte[] origin, byte[] target) {
 			var zDelta = new Writer();
 			int lenOut = target.Length;
 			int lenSrc = origin.Length;
@@ -35,7 +35,7 @@ namespace Fossil
 			for (i = 0; i < landmark.Length; i++) landmark[i] = -1;
 			int hv;
 			RollingHash h = new RollingHash();
-			for (i = lenSrc - lenSrc % NHASH - NHASH; i >= 0; i -= NHASH)
+			for (i = lenSrc - lenSrc % NHASH - NHASH; i >= 0; i -= NHASH) {
 				h.Init(origin, i);
 				hv = (int) (h.Value() % nHash);
 				collide[i/NHASH] = landmark[hv];
@@ -75,11 +75,11 @@ namespace Fossil
 						int j, k, x, y;
 						int sz;
 
-						
+
 						iSrc = iBlock*NHASH;
 
 						//if iSrc is inside the best match region we can skip
-						// as this would lead to the same match 
+						// as this would lead to the same match
 						if (bestCnt > 0 && iSrc > bestOfst && iSrc < (bestOfst + bestCnt))
 						{
 							iBlock = collide[iBlock];
@@ -170,7 +170,7 @@ namespace Fossil
 			return zDelta.ToArray();
 		}
 
-		public static byte[] Apply(byte[] origin, byte[] delta) { 
+		public static byte[] Apply(byte[] origin, byte[] delta) {
 			uint limit, total = 0;
 			uint lenSrc = (uint) origin.Length;
 			uint lenDelta = (uint) delta.Length;
@@ -223,7 +223,7 @@ namespace Fossil
 			throw new Exception("unterminated delta");
 		}
 
-		public static uint OutputSize(byte[] delta) { 
+		public static uint OutputSize(byte[] delta) {
 			Reader zDelta = new Reader(delta);
 			uint size = zDelta.GetInt();
 			if (zDelta.GetChar() != '\n')
@@ -236,7 +236,7 @@ namespace Fossil
 			for(i=1, x=64; v>=x; i++, x <<= 6){}
 			return i;
 		}
-			
+
 		// Return a 32-bit checksum of the array.
 		static uint Checksum(byte[] arr) {
 			uint sum0 = 0, sum1 = 0, sum2 = 0, sum = 0,
@@ -258,7 +258,7 @@ namespace Fossil
 				z += 4;
 				N -= 4;
 			}
-				
+
 			sum += (sum2 << 8) + (sum1 << 16) + (sum0 << 24);
 			switch (N&3) {
 			case 3:
