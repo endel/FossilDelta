@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Tests
 {
@@ -13,7 +14,7 @@ namespace Tests
 		{
 			int nTests = 5;
 
-			for (int i = 1; i <= nTests; i++) 
+			for (int i = 1; i <= nTests; i++)
 			{
 				byte[] origin = System.IO.File.ReadAllBytes ("../../data/" + i + "/origin");
 				byte[] target = System.IO.File.ReadAllBytes ("../../data/" + i + "/target");
@@ -24,6 +25,13 @@ namespace Tests
 
 				byte[] applied = Fossil.Delta.Apply(origin, delta);
 				Assert.AreEqual(applied, target);
+
+				using (var input = new MemoryStream(origin))
+				using (var output = new MemoryStream())
+				{
+					Fossil.Delta.Apply(input, delta, output);
+					Assert.AreEqual(output.ToArray(), target);
+				}
 			}
 		}
 
@@ -37,12 +45,43 @@ namespace Tests
 			Assert.DoesNotThrow (() => Fossil.Delta.Apply (origin, delta));
 
 			// Let's corrupt our delta
-			Stack<byte> deltaBytes = new Stack<byte> (delta);
-			deltaBytes.Pop ();
-			byte[] corruptedDelta = deltaBytes.ToArray ();
+			byte[] corruptedDelta = new byte[delta.Length - 1];
+			Array.Copy(delta, 0, corruptedDelta, 0, corruptedDelta.Length);
 
 			// Apply should throw exception
-			Assert.Throws<Exception> (() => Fossil.Delta.Apply(origin, corruptedDelta));
+			var ex = Assert.Throws<Exception> (() => Fossil.Delta.Apply(origin, corruptedDelta));
+			Assert.AreEqual("unknown delta operator", ex.Message);
+
+			using (var input = new MemoryStream(origin))
+			using (var output = new MemoryStream())
+			{
+				ex = Assert.Throws<Exception> (() => Fossil.Delta.Apply(input, corruptedDelta, output));
+				Assert.AreEqual("unknown delta operator", ex.Message);
+			}
+		}
+
+		[Test ()]
+		public void TestApplyBadChecksumDelta ()
+		{
+			byte[] origin = System.IO.File.ReadAllBytes ("../../data/2/origin");
+			byte[] delta = System.IO.File.ReadAllBytes ("../../data/2/delta");
+
+			// Apply successfully
+			Assert.DoesNotThrow (() => Fossil.Delta.Apply (origin, delta));
+
+			// Let's corrupt checksum in delta
+			delta[delta.Length-2]--;
+
+			// Apply should throw exception
+			var ex = Assert.Throws<Exception> (() => Fossil.Delta.Apply(origin, delta));
+			Assert.AreEqual("bad checksum", ex.Message);
+
+			using (var input = new MemoryStream(origin))
+			using (var output = new MemoryStream())
+			{
+				ex = Assert.Throws<Exception> (() => Fossil.Delta.Apply(input, delta, output));
+				Assert.AreEqual("bad checksum", ex.Message);
+			}
 		}
 
 	}
