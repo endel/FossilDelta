@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace Fossil
 {
@@ -213,6 +214,100 @@ namespace Fossil
 			throw new Exception("unterminated delta");
 		}
 
+		public static void Apply(Stream origin, byte[] delta, Stream target) {
+			uint limit, total = 0;
+			uint lenSrc = (uint) origin.Length;
+			uint lenDelta = (uint) delta.Length;
+			Reader zDelta = new Reader(delta);
+
+			limit = zDelta.GetInt();
+			if (zDelta.GetChar() != '\n')
+				throw new Exception("size integer not terminated by \'\\n\'");
+
+			uint checksum = 0;
+			const int BufferSize = 64 * 1024;
+			// We need additional 4 for bytes that might remain unprocessed from previous loop traversal
+			var buffer = new byte[BufferSize + 4];
+			int remainingChecksumBytes = 0;
+			while(zDelta.HaveBytes()) {
+				uint cnt, ofst;
+				cnt = zDelta.GetInt();
+
+				switch (zDelta.GetChar()) {
+					case '@':
+						ofst = zDelta.GetInt();
+						if (zDelta.HaveBytes() && zDelta.GetChar() != ',')
+							throw new Exception("copy command not terminated by \',\'");
+						total += cnt;
+						if (total > limit)
+							throw new Exception("copy exceeds output file size");
+						if (ofst+cnt > lenSrc)
+							throw new Exception("copy extends past end of input");
+
+						origin.Position = ofst;
+						int remainingBytes = (int) cnt;
+						while (remainingBytes > 0)
+						{
+							int totalRead = origin.Read(buffer, remainingChecksumBytes, Math.Min(remainingBytes, BufferSize));
+							remainingBytes -= totalRead;
+							target.Write(buffer, remainingChecksumBytes, totalRead);
+
+							totalRead += remainingChecksumBytes;
+
+							remainingChecksumBytes = totalRead % 4;
+							int checksumBytes = totalRead - remainingChecksumBytes;
+							checksum = Checksum(buffer, checksumBytes, checksum);
+							for (int i = 0; i < remainingChecksumBytes; i++)
+							{
+								buffer[i] = buffer[i + checksumBytes];
+							}
+						}
+						break;
+
+					case ':':
+						total += cnt;
+						if (total > limit)
+							throw new Exception("insert command gives an output larger than predicted");
+						if (cnt > lenDelta)
+							throw new Exception("insert count exceeds size of delta");
+						remainingBytes = (int) cnt;
+						int pos = (int) zDelta.pos;
+						while (remainingBytes > 0)
+						{
+							var totalCopied = Math.Min(remainingBytes, BufferSize);
+							Array.Copy(zDelta.a, pos, buffer, remainingChecksumBytes, totalCopied);
+							remainingBytes -= totalCopied;
+
+							totalCopied += remainingChecksumBytes;
+
+							remainingChecksumBytes = totalCopied % 4;
+							int checksumBytes = totalCopied - remainingChecksumBytes;
+							checksum = Checksum(buffer, checksumBytes, checksum);
+							for (int i = 0; i < remainingChecksumBytes; i++)
+							{
+								buffer[i] = buffer[i + checksumBytes];
+							}
+						}
+
+						target.Write(zDelta.a, (int) zDelta.pos, (int) cnt);
+						zDelta.pos += cnt;
+						break;
+
+					case ';':
+						if (remainingChecksumBytes > 0) checksum = Checksum(buffer, remainingChecksumBytes, checksum);
+						if (cnt != checksum)
+							throw new Exception("bad checksum");
+						if (total != limit)
+							throw new Exception("generated size does not match predicted size");
+						return;
+
+					default:
+						throw new Exception("unknown delta operator");
+				}
+			}
+			throw new Exception("unterminated delta");
+		}
+
 		public static uint OutputSize(byte[] delta) {
 			Reader zDelta = new Reader(delta);
 			uint size = zDelta.GetInt();
@@ -228,9 +323,9 @@ namespace Fossil
 		}
 
 		// Return a 32-bit checksum of the array.
-		static uint Checksum(byte[] arr) {
-			uint sum0 = 0, sum1 = 0, sum2 = 0, sum = 0,
-			z = 0, N = (uint) arr.Length;
+		static uint Checksum(byte[] arr, int count = 0, uint sum = 0) {
+			uint sum0 = 0, sum1 = 0, sum2 = 0,
+			z = 0, N = (uint) (count == 0 ? arr.Length : count);
 
 			while(N >= 16){
 				sum0 += (uint) arr[z+0] + arr[z+4] + arr[z+8]  + arr[z+12];
